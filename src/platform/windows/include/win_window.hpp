@@ -16,6 +16,8 @@ public:
   void update();
   bool isCloseRequested();
   void close();
+
+  HWND getWindowHandle();
 };
 
 #endif

@@ -73,6 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\</OutDir>
     <TargetName>Litecode</TargetName>
+    <IncludePath>$(SolutionDir)dependencies;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -114,6 +115,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,20 +135,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="LICENSE" />
+    <ClCompile Include="dependencies\glad\glad.c" />
     <ClCompile Include="src\gui_components\window.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\platform\windows\win_opengl.cpp" />
     <ClCompile Include="src\platform\windows\win_window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dependencies\glad\glad.h" />
+    <ClInclude Include="dependencies\gl\glext.h" />
+    <ClInclude Include="dependencies\gl\wglext.h" />
+    <ClInclude Include="dependencies\KHR\khrplatform.h" />
     <ClInclude Include="src\gui_components\include\window.hpp" />
+    <ClInclude Include="src\platform\windows\include\win_opengl.hpp" />
     <ClInclude Include="src\platform\windows\include\win_window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xsd Include="README.xsd">
+    <Xsd Include="README.md">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

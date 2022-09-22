@@ -8,6 +8,8 @@ Window::Window(unsigned int width, unsigned int height, std::string title)
 {
 #ifdef _WIN32
   window = new Windows_Window(width, height, title);
+  Windows_OpenGL::init();
+  Windows_OpenGL::createContext(window->getWindowHandle());
 #endif
 }
 

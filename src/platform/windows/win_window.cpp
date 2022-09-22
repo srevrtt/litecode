@@ -35,7 +35,7 @@ Windows_Window::Windows_Window(unsigned int width, unsigned int height, std::str
     wc.hInstance = GetModuleHandleA(nullptr);
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
-    wc.hbrBackground = CreateSolidBrush(RGB(210, 210, 210)); // light gray for now
+    wc.hbrBackground = CreateSolidBrush(RGB(26, 26, 26)); // light gray for now
     wc.lpszClassName = "window";
     wc.lpszMenuName = nullptr;
     wc.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
@@ -89,6 +89,12 @@ bool Windows_Window::isCloseRequested()
 void Windows_Window::close()
 {
   DestroyWindow(hwnd);
+}
+
+// Returns the Win32 window handle for OpenGL context creation
+HWND Windows_Window::getWindowHandle()
+{
+  return hwnd;
 }
 
 #endif

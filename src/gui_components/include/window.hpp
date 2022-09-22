@@ -2,6 +2,7 @@
 
 #ifdef _WIN32
 #include "../../platform/windows/include/win_window.hpp"
+#include "../../platform/windows/include/win_opengl.hpp"
 #endif
 
 class Window
