@@ -36,6 +36,9 @@
     <ClCompile Include="src\utilities\fs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui_components\flexbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\windows\include\win_window.hpp">
@@ -64,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="src\gui_components\include\frame.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui_components\include\flexbox.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

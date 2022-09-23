@@ -136,7 +136,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\glad.c" />
+    <ClCompile Include="src\gui_components\flexbox.cpp" />
     <ClCompile Include="src\gui_components\frame.cpp" />
+    <ClInclude Include="src\gui_components\include\flexbox.hpp" />
     <ClInclude Include="src\gui_components\include\frame.hpp" />
     <ClCompile Include="src\gui_components\window.cpp" />
     <ClCompile Include="src\main.cpp" />

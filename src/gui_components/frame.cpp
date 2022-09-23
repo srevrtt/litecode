@@ -31,6 +31,9 @@ FrameComponent::FrameComponent(int x, int y, unsigned int width, unsigned int he
   this->y = y;
   this->width = width;
   this->height = height;
+  this->r = r;
+  this->g = g;
+  this->b = b;
 
   // vertex buffer object
   unsigned int vbo;
@@ -57,4 +60,14 @@ FrameComponent::FrameComponent(int x, int y, unsigned int width, unsigned int he
 std::vector<std::vector<int>> getFrames()
 {
   return frames;
+}
+
+std::vector<int> FrameComponent::getColor()
+{
+  return {r, g, b};
+}
+
+std::vector<int> FrameComponent::getSizeAndPosition()
+{
+  return {x, y, (int)width, (int)height};
 }

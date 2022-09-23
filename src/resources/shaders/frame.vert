@@ -10,5 +10,5 @@ uniform vec3 color;
 void main()
 {
   gl_Position = projection * model * vec4(aPos, 1.0);
-  vertexColor = vec4(color, 1.0);
+  vertexColor = vec4(color.x/255, color.y/255, color.z/255, 1.0);
 }

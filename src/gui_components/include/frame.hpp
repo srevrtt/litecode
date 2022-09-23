@@ -14,4 +14,7 @@ public:
 
   void changePos(int x, int y);
   void changeSize(unsigned int width, unsigned int height);
+
+  std::vector<int> getColor();
+  std::vector<int> getSizeAndPosition();
 };
