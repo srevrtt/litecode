@@ -7,8 +7,8 @@
 
 std::vector<std::vector<int>> frames;
 
-// Creates a new frame with the specified size and position
-FrameComponent::FrameComponent(int x, int y, unsigned int width, unsigned int height)
+// Creates a new frame with the specified size, position, and color
+FrameComponent::FrameComponent(int x, int y, unsigned int width, unsigned int height, unsigned int r, unsigned int g, unsigned int b)
 {
   // vertices
   float vertices[] =
@@ -44,7 +44,14 @@ FrameComponent::FrameComponent(int x, int y, unsigned int width, unsigned int he
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-  frames.push_back({ x, y, (int)width, (int)height});
+  // check color parameters
+  if (r > 255 && g > 255 && b > 255)
+  {
+    std::cout << "Error: Invalid color parameter for frame.\n";
+    exit(1);
+  }
+
+  frames.push_back({ x, y, (int)width, (int)height, (int)r, (int)g, (int)b});
 }
 
 std::vector<std::vector<int>> getFrames()

@@ -76,18 +76,26 @@ void Window::run()
     for (auto &frame : getFrames())
     {
       glm::mat4 model = glm::mat4(1.0f);
+      glm::vec3 color;
 
       // apply translation to x, y position, corner allignment, and offset to the height to exclude the titlebar
       model = glm::translate(model, glm::vec3(frame[0] + (frame[2] / 2), frame[1] + (frame[3] * 1.25), 0.0f));
       model = glm::scale(model, glm::vec3(frame[2], frame[3], 0.0f)); // scale to the width and height
 
+      // get the color
+      color = glm::vec3(frame[4], frame[5], frame[6]);
+
       // get locations of uniform variables inside the shaders
       int modelLocation = glGetUniformLocation(shaderProgram, "model");
       int projectionLocation = glGetUniformLocation(shaderProgram, "projection");
+      int colorLocation = glGetUniformLocation(shaderProgram, "color");
 
       // apply the transformations
       glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
       glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+
+      // apply the color
+      glUniform3fv(colorLocation, 1, glm::value_ptr(color));
 
       // draw it!
       glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
