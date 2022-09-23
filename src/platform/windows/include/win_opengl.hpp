@@ -7,6 +7,7 @@ namespace Windows_OpenGL
 {
   void init();
   void createContext(HWND hwnd);
+  void render();
 }
 
 #endif

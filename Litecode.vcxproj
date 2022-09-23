@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\</OutDir>
     <TargetName>Litecode</TargetName>
-    <IncludePath>$(SolutionDir)dependencies;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -136,10 +136,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\glad.c" />
+    <ClCompile Include="src\gui_components\frame.cpp" />
+    <ClInclude Include="src\gui_components\include\frame.hpp" />
     <ClCompile Include="src\gui_components\window.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\platform\windows\win_opengl.cpp" />
     <ClCompile Include="src\platform\windows\win_window.cpp" />
+    <ClCompile Include="src\utilities\fs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\glad\glad.h" />
@@ -149,6 +152,7 @@
     <ClInclude Include="src\gui_components\include\window.hpp" />
     <ClInclude Include="src\platform\windows\include\win_opengl.hpp" />
     <ClInclude Include="src\platform\windows\include\win_window.hpp" />
+    <ClInclude Include="src\utilities\include\fs.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="README.md">
@@ -157,6 +161,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\resources\shaders\frame.frag" />
+    <None Include="src\resources\shaders\frame.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

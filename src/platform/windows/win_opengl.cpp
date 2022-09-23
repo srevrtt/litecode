@@ -4,9 +4,12 @@
 #include <Windows.h>
 #include "include/win_opengl.hpp"
 
+#include <glad/glad.h>
 #include <gl/GL.h>
 #include <gl/glext.h>
 #include <gl/wglext.h>
+
+HDC hdc;
 
 // OpenGL context type
 typedef HGLRC WINAPI wglCreateContextAttribsARB_type(HDC hdc, HGLRC hShareContext, const int* attribList);
@@ -90,7 +93,7 @@ void Windows_OpenGL::init()
 void Windows_OpenGL::createContext(HWND hwnd)
 {
   // get the real graphics driver
-  HDC hdc = GetDC(hwnd);
+  hdc = GetDC(hwnd);
 
   // modern pixel format configuration
   int pixelFormatAttribs[] =
@@ -127,4 +130,13 @@ void Windows_OpenGL::createContext(HWND hwnd)
   // create the context and make it current
   HGLRC glContext = wglCreateContextAttribsARB(hdc, 0, glAttribs);
   wglMakeCurrent(hdc, glContext);
+
+  // load Glad
+  gladLoadGL();
+}
+
+// Renders everything from the window's renderer to the screen
+void Windows_OpenGL::render()
+{
+  SwapBuffers(hdc);
 }

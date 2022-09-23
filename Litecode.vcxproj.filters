@@ -30,6 +30,12 @@
     <ClCompile Include="src\platform\windows\win_opengl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui_components\frame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\fs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\windows\include\win_window.hpp">
@@ -53,10 +59,20 @@
     <ClInclude Include="src\platform\windows\include\win_opengl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\utilities\include\fs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui_components\include\frame.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="README.md">
       <Filter>Header Files</Filter>
     </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\resources\shaders\frame.vert" />
+    <None Include="src\resources\shaders\frame.frag" />
   </ItemGroup>
 </Project>
