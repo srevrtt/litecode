@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
   FrameComponent* frame2 = new FrameComponent(0, 0, 0, 0, 0, 0, 0);
   FrameComponent* frame3 = new FrameComponent(0, 0, 0, 0, 206, 17, 38);
 
-  FlexboxComponent* flex = new FlexboxComponent();
+  FlexboxComponent* flex = new FlexboxComponent(FB_ALIGNMENT_VERTICAL);
   
   flex->increaseCapacity(3);
 

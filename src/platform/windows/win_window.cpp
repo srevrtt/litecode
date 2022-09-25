@@ -11,7 +11,9 @@
 // global HDC
 HDC driver;
 
-int counter = 0;
+// FPS limiting
+double frameStart, frameTime;
+const double frameDelay = 1000 / 60;
 
 // Window main event loop
 LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -21,19 +23,14 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
   case WM_DESTROY:
     PostQuitMessage(0);
     break;
-  case WM_PAINT:
-    if (counter == 1)
+  case WM_MOVING:
+    frameTime = GetTickCount64() - frameStart;
+    if (frameDelay > frameTime)
     {
-      // set the viewport in case the window size changed
-      RECT rect;
-      if (GetWindowRect(hwnd, &rect))
-      {
-        glViewport(0, 0, rect.right - rect.left, rect.bottom - rect.top);
-      }
-
-      SwapBuffers(driver);
+      Sleep((frameDelay - frameTime) / 2);
     }
 
+    frameStart = GetTickCount64();
     break;
   case WM_GETMINMAXINFO:
     {
@@ -107,7 +104,6 @@ Windows_Window::Windows_Window(unsigned int width, unsigned int height, std::str
 // Updates the window
 void Windows_Window::update()
 {
-  counter = 1;
   // set the viewport in case the window size changed
   RECT rect;
   if (GetWindowRect(hwnd, &rect))
@@ -122,6 +118,14 @@ void Windows_Window::update()
 // Returns a boolean value determining if the window is active
 bool Windows_Window::active()
 {
+  frameTime = GetTickCount64() - frameStart;
+  if (frameDelay > frameTime)
+  {
+    std::cout << frameDelay - frameTime << '\n';
+    Sleep(frameDelay - frameTime);
+  }
+
+  frameStart = GetTickCount64();
   return GetMessage(&msg, nullptr, 0, 0) > 0;
 }
 

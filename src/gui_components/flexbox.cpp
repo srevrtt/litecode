@@ -13,6 +13,12 @@
 
 std::vector<FlexboxComponent*> flexboxes;
 
+// Creates a new flexbox component
+FlexboxComponent::FlexboxComponent(FlexboxAlignment alignment)
+{
+  this->alignment = alignment;
+}
+
 // Increases the maximum number of frames
 void FlexboxComponent::increaseCapacity(int capacity)
 {
@@ -29,6 +35,17 @@ void FlexboxComponent::addFrame(FrameComponent* frame)
   // calculate position
   int newX = 0;
   int newY = (currentFrame * newHeight);
+
+  switch (alignment)
+  {
+  case FB_ALIGNMENT_VERTICAL:
+    newWidth = 1280 / numFrames;
+    newHeight = 720;
+    newX = (currentFrame * newWidth);
+    newY = 0;
+
+    break;
+  }
 
   // get the previous frame's color
   std::vector<int> frameColor = frame->getColor();
