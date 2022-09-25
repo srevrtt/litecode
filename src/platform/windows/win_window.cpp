@@ -1,9 +1,17 @@
 #ifdef _WIN32
 
+#include <iostream>
 #include <string>
+
 #include <Windows.h>
+#include <glad/glad.h>
 
 #include "include/win_window.hpp"
+
+// global HDC
+HDC driver;
+
+int counter = 0;
 
 // Window main event loop
 LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -12,6 +20,27 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
   {
   case WM_DESTROY:
     PostQuitMessage(0);
+    break;
+  case WM_PAINT:
+    if (counter == 1)
+    {
+      // set the viewport in case the window size changed
+      RECT rect;
+      if (GetWindowRect(hwnd, &rect))
+      {
+        glViewport(0, 0, rect.right - rect.left, rect.bottom - rect.top);
+      }
+
+      SwapBuffers(driver);
+    }
+
+    break;
+  case WM_GETMINMAXINFO:
+    {
+      LPMINMAXINFO info = (LPMINMAXINFO)lparam;
+      info->ptMinTrackSize.x = 800;
+      info->ptMinTrackSize.y = 600;
+    }
     break;
   default:
     return DefWindowProcA(hwnd, msg, wparam, lparam);
@@ -35,7 +64,7 @@ Windows_Window::Windows_Window(unsigned int width, unsigned int height, std::str
     wc.hInstance = GetModuleHandleA(nullptr);
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
-    wc.hbrBackground = CreateSolidBrush(RGB(26, 26, 26)); // light gray for now
+    wc.hbrBackground = NULL;
     wc.lpszClassName = "window";
     wc.lpszMenuName = nullptr;
     wc.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
@@ -69,20 +98,31 @@ Windows_Window::Windows_Window(unsigned int width, unsigned int height, std::str
     // show & update the window
     ShowWindow(hwnd, SW_NORMAL);
     UpdateWindow(hwnd);
+
+    // set the graphics driver
+    driver = GetDC(hwnd);
   }
 }
 
 // Updates the window
 void Windows_Window::update()
 {
+  counter = 1;
+  // set the viewport in case the window size changed
+  RECT rect;
+  if (GetWindowRect(hwnd, &rect))
+  {
+    glViewport(0, 0, rect.right - rect.left, rect.bottom - rect.top);
+  }
+
   TranslateMessage(&msg);
   DispatchMessageA(&msg);
 }
 
-// Returns a boolean value determining if the window should close
-bool Windows_Window::isCloseRequested()
+// Returns a boolean value determining if the window is active
+bool Windows_Window::active()
 {
-  return GetMessageA(&msg, nullptr, 0, 0) == 0;
+  return GetMessage(&msg, nullptr, 0, 0) > 0;
 }
 
 // Closes the window
@@ -95,6 +135,12 @@ void Windows_Window::close()
 HWND Windows_Window::getWindowHandle()
 {
   return hwnd;
+}
+
+// Returns the Win32 graphics driver for OpenGL
+HDC Windows_Window::getDriver()
+{
+  return driver;
 }
 
 #endif

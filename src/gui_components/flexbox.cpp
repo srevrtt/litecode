@@ -11,44 +11,51 @@
 
 #include <glad/glad.h>
 
-std::vector<Flexbox> flexboxes;
+std::vector<FlexboxComponent*> flexboxes;
 
-void FlexboxComponent::increaseCapacity()
+// Increases the maximum number of frames
+void FlexboxComponent::increaseCapacity(int capacity)
 {
-  numFrames++;
+  numFrames += capacity;
 }
 
+// Appends a frame to the flexbox
 void FlexboxComponent::addFrame(FrameComponent* frame)
 {
-  int newWidth = 1280 / numFrames;
-  int newHeight = 720;
+  // calculate width & height
+  int newWidth = 1280;
+  int newHeight = 720 / numFrames;
 
-  int newX = newX = (currentFrame * newWidth);
-  int newY = 0;
+  // calculate position
+  int newX = 0;
+  int newY = (currentFrame * newHeight);
 
-  std::cout << newX << ',' << newY << ',' << newWidth << ',' << newHeight << '\n';
-
+  // get the previous frame's color
   std::vector<int> frameColor = frame->getColor();
-  FrameComponent* newFrame = new FrameComponent(newX, newY, newWidth, newHeight, frameColor[0], frameColor[1], frameColor[2]);
 
+  // create a copy of the frame and append it to the frames list
+  FrameComponent* newFrame = new FrameComponent(newX, newY, newWidth, newHeight, frameColor[0], frameColor[1], frameColor[2]);
+  newFrame->isChild = true;
   frames.push_back(newFrame);
 
-  Flexbox clone{};
-  clone.frames = frames;
-  clone.numFrames = numFrames;
-  flexboxes.push_back(clone);
+  frame->isChild = true;
 
+  // create a clone of this component for rendering
+  flexboxes.push_back(this);
   currentFrame++;
-  delete frame;
 }
 
-void Flexbox::render(unsigned int shaderProgram, glm::mat4 projection)
+// Draws the flexbox's components onto the renderer
+void FlexboxComponent::render(unsigned int shaderProgram, glm::mat4 projection)
 {
+  // get each frame
   for (auto& frame : frames)
   {
+    // get information of the frame
     std::vector<int> transformations = frame->getSizeAndPosition();
     std::vector<int> colorArr = frame->getColor();
-
+    
+    // shorten the process of getting the position & size
     int x = transformations[0];
     int y = transformations[1];
     int width = transformations[2];
@@ -81,7 +88,8 @@ void Flexbox::render(unsigned int shaderProgram, glm::mat4 projection)
   }
 }
 
-std::vector<Flexbox> FlexboxComponent::getAllFlexboxes()
+// Gets all of the flexboxes
+std::vector<FlexboxComponent*> FlexboxComponent::getAllFlexboxes()
 {
   return flexboxes;
 }

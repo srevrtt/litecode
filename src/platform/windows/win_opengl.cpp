@@ -2,7 +2,9 @@
 #include <string>
 
 #include <Windows.h>
+
 #include "include/win_opengl.hpp"
+#include "include/win_window.hpp"
 
 #include <glad/glad.h>
 #include <gl/GL.h>
@@ -93,7 +95,7 @@ void Windows_OpenGL::init()
 void Windows_OpenGL::createContext(HWND hwnd)
 {
   // get the real graphics driver
-  hdc = GetDC(hwnd);
+  hdc = Windows_Window::getDriver();
 
   // modern pixel format configuration
   int pixelFormatAttribs[] =
@@ -138,5 +140,5 @@ void Windows_OpenGL::createContext(HWND hwnd)
 // Renders everything from the window's renderer to the screen
 void Windows_OpenGL::render()
 {
-  SwapBuffers(hdc);
+  SwapBuffers(Windows_Window::getDriver());
 }

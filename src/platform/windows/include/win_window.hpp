@@ -7,17 +7,18 @@
 class Windows_Window
 {
 private:
-  WNDCLASSEXA wc;
-  HWND hwnd;
-  MSG msg;
+  WNDCLASSEXA wc{};
+  HWND hwnd{};
+  MSG msg{};
 public:
   Windows_Window(unsigned int width, unsigned int height, std::string title);
 
   void update();
-  bool isCloseRequested();
+  bool active();
   void close();
 
   HWND getWindowHandle();
+  static HDC getDriver();
 };
 
 #endif
