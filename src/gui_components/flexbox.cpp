@@ -12,6 +12,27 @@
 #include <glad/glad.h>
 
 std::vector<FlexboxComponent*> flexboxes;
+int lastFlex = 0;
+
+// Creates a new Flexbox Frame
+FlexboxFrame::FlexboxFrame(int x, int y, int r, int g, int b, unsigned int width, unsigned int height, int flex)
+{
+  // set position
+  this->x = x;
+  this->y = y;
+
+  // set color
+  this->r = r;
+  this->g = g;
+  this->b = b;
+
+  // set width & height
+  this->width = width;
+  this->height = height;
+
+  // set flex parameter
+  this->flex = flex;
+}
 
 // Creates a new flexbox component
 FlexboxComponent::FlexboxComponent(FlexboxAlignment alignment)
@@ -26,7 +47,7 @@ void FlexboxComponent::increaseCapacity(int capacity)
 }
 
 // Appends a frame to the flexbox
-void FlexboxComponent::addFrame(FrameComponent* frame)
+void FlexboxComponent::addFrame(FrameComponent* frame, int flex)
 {
   // calculate width & height
   int newWidth = 1280;
@@ -34,7 +55,20 @@ void FlexboxComponent::addFrame(FrameComponent* frame)
 
   // calculate position
   int newX = 0;
-  int newY = (currentFrame * newHeight);
+  int newY = currentFrame * newHeight;
+
+  // FLEXBOX
+  if (flex > 0)
+  {
+    if (currentFrame == 1)
+    {
+      float modifier = (1.0f / (float)flex) * 2;
+
+      frames[0]->height = modifier * newHeight;
+      newHeight = 720 - frames[0]->height;
+      newY = frames[0]->height;
+    }
+  }
 
   switch (alignment)
   {
@@ -51,11 +85,11 @@ void FlexboxComponent::addFrame(FrameComponent* frame)
   std::vector<int> frameColor = frame->getColor();
 
   // create a copy of the frame and append it to the frames list
-  FrameComponent* newFrame = new FrameComponent(newX, newY, newWidth, newHeight, frameColor[0], frameColor[1], frameColor[2]);
-  newFrame->isChild = true;
+  FlexboxFrame* newFrame = new FlexboxFrame(newX, newY, frameColor[0], frameColor[1], frameColor[2], newWidth, newHeight, 1);
   frames.push_back(newFrame);
 
   frame->isChild = true;
+  lastFlex = flex;
 
   // create a clone of this component for rendering
   flexboxes.push_back(this);
@@ -68,25 +102,15 @@ void FlexboxComponent::render(unsigned int shaderProgram, glm::mat4 projection)
   // get each frame
   for (auto& frame : frames)
   {
-    // get information of the frame
-    std::vector<int> transformations = frame->getSizeAndPosition();
-    std::vector<int> colorArr = frame->getColor();
-    
-    // shorten the process of getting the position & size
-    int x = transformations[0];
-    int y = transformations[1];
-    int width = transformations[2];
-    int height = transformations[3];
-
     glm::mat4 model = glm::mat4(1.0f);
     glm::vec3 color;
 
     // apply translation to x, y position, corner allignment, and offset to the height to exclude the titlebar
-    model = glm::translate(model, glm::vec3(x + (width / 2), y + (height / 2), 0.0f));
-    model = glm::scale(model, glm::vec3(width, height, 0.0f)); // scale to the width and height
+    model = glm::translate(model, glm::vec3(frame->x + (frame->width / 2), frame->y + (frame->height / 2), 0.0f));
+    model = glm::scale(model, glm::vec3(frame->width, frame->height, 0.0f)); // scale to the width and height
 
     // get the color
-    color = glm::vec3(colorArr[0], colorArr[1], colorArr[2]);
+    color = glm::vec3(frame->r, frame->g, frame->b);
 
     // get locations of uniform variables inside the shaders
     int modelLocation = glGetUniformLocation(shaderProgram, "model");

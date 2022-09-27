@@ -121,7 +121,6 @@ bool Windows_Window::active()
   frameTime = GetTickCount64() - frameStart;
   if (frameDelay > frameTime)
   {
-    std::cout << frameDelay - frameTime << '\n';
     Sleep(frameDelay - frameTime);
   }
 

@@ -10,21 +10,18 @@ int main(int argc, char* argv[])
   Window* window = new Window(1280, 720, "Litecode v0.1.0");
 
   // create two test frames
-  FrameComponent* frame1 = new FrameComponent(0, 0, 0, 0, 255, 132, 48);
-  FrameComponent* frame2 = new FrameComponent(0, 0, 0, 0, 0, 0, 0);
-  FrameComponent* frame3 = new FrameComponent(0, 0, 0, 0, 206, 17, 38);
+  FrameComponent* frame1 = new FrameComponent(0, 0, 0, 0, 110, 110, 110);
+  FrameComponent* frame2 = new FrameComponent(0, 0, 0, 0, 90, 90, 90);
 
-  FlexboxComponent* flex = new FlexboxComponent(FB_ALIGNMENT_VERTICAL);
+  FlexboxComponent* flex = new FlexboxComponent(FB_ALIGNMENT_HORIZONTAL);
   
-  flex->increaseCapacity(3);
+  flex->increaseCapacity(2);
 
-  flex->addFrame(frame1);
-  flex->addFrame(frame2);
-  flex->addFrame(frame3);
+  flex->addFrame(frame1, 1);
+  flex->addFrame(frame2, 3);
 
   frame1->destroy();
   frame2->destroy();
-  frame3->destroy();
 
   window->run();
   return 0;
