@@ -527,7 +527,9 @@
     <ClInclude Include="dependencies\glm\glm\vec3.hpp" />
     <ClInclude Include="dependencies\glm\glm\vec4.hpp" />
     <ClInclude Include="dependencies\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="dependencies\stb\stb_image.h" />
     <ClInclude Include="src\gui_components\include\frame.hpp" />
+    <ClCompile Include="src\gui_components\image.cpp" />
     <ClCompile Include="src\gui_components\window.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\platform\windows\win_opengl.cpp" />
@@ -539,6 +541,7 @@
     <ClInclude Include="dependencies\gl\glext.h" />
     <ClInclude Include="dependencies\gl\wglext.h" />
     <ClInclude Include="dependencies\KHR\khrplatform.h" />
+    <ClInclude Include="src\gui_components\include\image.hpp" />
     <ClInclude Include="src\gui_components\include\window.hpp" />
     <ClInclude Include="src\platform\windows\include\win_opengl.hpp" />
     <ClInclude Include="src\platform\windows\include\win_window.hpp" />
@@ -1390,9 +1393,15 @@
     <None Include="dependencies\glm\glm\gtx\wrap.inl" />
     <None Include="src\resources\shaders\frame.frag" />
     <None Include="src\resources\shaders\frame.vert" />
+    <None Include="src\resources\shaders\image.frag" />
+    <None Include="src\resources\shaders\image.vert" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\freetype\freetype.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\resources\images\test-2.png" />
+    <Image Include="src\resources\images\test.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

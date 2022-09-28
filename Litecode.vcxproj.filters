@@ -39,6 +39,9 @@
     <ClCompile Include="dependencies\glm\glm\detail\glm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui_components\image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\windows\include\win_window.hpp">
@@ -1229,6 +1232,12 @@
     <ClInclude Include="dependencies\ft2build.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\gui_components\include\image.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\stb\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="README.md">
@@ -2351,8 +2360,18 @@
     <None Include="dependencies\glm\glm\gtx\wrap.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="src\resources\shaders\image.vert" />
+    <None Include="src\resources\shaders\image.frag" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\freetype\freetype.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\resources\images\test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\images\test-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
