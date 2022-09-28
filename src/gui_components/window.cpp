@@ -5,7 +5,6 @@
 
 #include "include/frame.hpp"
 #include "include/window.hpp"
-#include "include/flexbox.hpp"
 
 #include "../utilities/include/fs.hpp"
 
@@ -80,11 +79,6 @@ void Window::run()
       frame->render(shaderProgram, projection);
     }
 
-    for (auto &flex : FlexboxComponent::getAllFlexboxes())
-    {
-      flex->render(shaderProgram, projection);
-    }
-    
     Windows_OpenGL::render();
     window->update();
   }

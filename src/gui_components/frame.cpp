@@ -10,6 +10,7 @@
 #include "include/frame.hpp"
 
 std::vector<FrameComponent*> frames;
+bool first = false;
 
 // Creates a new frame with the specified size, position, and color
 FrameComponent::FrameComponent(int x, int y, unsigned int width, unsigned int height, unsigned int r, unsigned int g, unsigned int b)
@@ -67,8 +68,8 @@ void FrameComponent::render(unsigned int shaderProgram, glm::mat4 projection)
   glm::mat4 model = glm::mat4(1.0f);
   glm::vec3 color;
 
-  // apply translation to x, y position, corner allignment, and offset to the height to exclude the titlebar
-  model = glm::translate(model, glm::vec3(x + (width / 2), y + (height / 2), 0.0f));
+  // apply translation to x, y position and corner allignment
+  model = glm::translate(model, glm::vec3(x + (width / 2), (y + (height / 2)), 0.0f));
   model = glm::scale(model, glm::vec3(width, height, 0.0f)); // scale to the width and height
 
   // get the color
@@ -89,6 +90,7 @@ void FrameComponent::render(unsigned int shaderProgram, glm::mat4 projection)
   // draw it!
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
+
 
 // Deletes the frame
 void FrameComponent::destroy()
