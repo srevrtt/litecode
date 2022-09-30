@@ -1,3 +1,5 @@
+#ifdef _WIN32
+
 #include <iostream>
 #include <string>
 
@@ -142,3 +144,5 @@ void Windows_OpenGL::render()
 {
   SwapBuffers(Windows_Window::getDriver());
 }
+
+#endif

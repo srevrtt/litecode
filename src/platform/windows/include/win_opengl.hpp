@@ -1,7 +1,7 @@
 #pragma once
-#include <Windows.h>
 
 #ifdef _WIN32
+#include <Windows.h>
 
 namespace Windows_OpenGL
 {

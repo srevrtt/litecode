@@ -5,13 +5,8 @@
 
 #include "include/frame.hpp"
 #include "include/window.hpp"
-#include "include/image.hpp"
 
 #include "../utilities/include/fs.hpp"
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 // Creates a window for the current platform
 Window::Window(unsigned int width, unsigned int height, std::string title)
@@ -20,10 +15,12 @@ Window::Window(unsigned int width, unsigned int height, std::string title)
   window = new Windows_Window(width, height, title);
   Windows_OpenGL::init();
   Windows_OpenGL::createContext(window->getWindowHandle());
+#elif __linux__
+  window = new Linux_Window(width, height, title);
 #endif
 
   // initalize OpenGL rendering
-  glViewport(0, 0, width, height);
+  ////glViewport(0, 0, width, height);
 
   // shader sources
   //std::string vertexShaderString = Filesystem::readShaderFile("src/resources/shaders/frame.vert");
@@ -63,6 +60,7 @@ Window::Window(unsigned int width, unsigned int height, std::string title)
 // Runs the main loop for the created window
 void Window::run()
 {
+  #ifdef _WIN32
   if (Image::getTextures().size() > 0)
   {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -101,4 +99,6 @@ void Window::run()
   }
 
   window->close();
+  
+  #endif
 }
