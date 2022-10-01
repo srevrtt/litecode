@@ -3,35 +3,47 @@
 #include <iostream>
 #include <string>
 
+#include <glad/glad.h>
+
 #include "include/linux_window.hpp"
+#include "include/linux_opengl.hpp"
 
 #include <gtk/gtk.h>
 #include <gtk/gtkmain.h>
+#include <gtk/gtkx.h>
 
 int windowWidth = 0;
 int windowHeight = 0;
 std::string windowTitle = "";
 
-static gpointer test(gpointer data)
+GtkWidget *window;
+bool initialized = false;
+int count = 0;
+
+gboolean mainLoop (GtkWidget *widget, GdkFrameClock *clock, gpointer data)
 {
-  while (true)
+  if (initialized)
   {
-    // TODO:
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    Linux_Opengl::render();
   }
 
-  return 0;
+  return 1;
 }
 
 static void onActivate(GtkApplication *app)
 {
-  GtkWidget *window = gtk_application_window_new(app);
+  window = gtk_application_window_new(app);
 
   gtk_window_set_default_size(GTK_WINDOW(window), windowWidth, windowHeight);
   gtk_window_set_title(GTK_WINDOW(window), windowTitle.c_str());
 
   gtk_window_present(GTK_WINDOW(window));
 
-  GThread *thread = g_thread_new("testthread", test, nullptr);
+  Linux_Opengl::createContext(initialized);
+  gtk_widget_add_tick_callback(window, mainLoop, nullptr, nullptr);
 }
 
 Linux_Window::Linux_Window(unsigned int width, unsigned int height, std::string title)
@@ -46,6 +58,16 @@ Linux_Window::Linux_Window(unsigned int width, unsigned int height, std::string 
 
   const char *argv[] = { title.c_str() };
   g_application_run(G_APPLICATION(app), 0, (char **)argv);
+}
+
+Display *Linux_Window::getDisplay()
+{
+  return gdk_x11_display_get_xdisplay(gdk_display_get_default());
+}
+
+Window Linux_Window::getWindow()
+{
+  return gdk_x11_window_get_xid(gtk_widget_get_window(window));
 }
 
 #endif

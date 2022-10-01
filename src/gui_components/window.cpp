@@ -9,14 +9,14 @@
 #include "../utilities/include/fs.hpp"
 
 // Creates a window for the current platform
-Window::Window(unsigned int width, unsigned int height, std::string title)
+OSWindow::OSWindow(unsigned int width, unsigned int height, std::string title)
 {
 #ifdef _WIN32
   window = new Windows_Window(width, height, title);
   Windows_OpenGL::init();
   Windows_OpenGL::createContext(window->getWindowHandle());
 #elif __linux__
-  window = new Linux_Window(width, height, title);
+  win = new Linux_Window(width, height, title);
 #endif
 
   // initalize OpenGL rendering
@@ -58,7 +58,7 @@ Window::Window(unsigned int width, unsigned int height, std::string title)
 }
 
 // Runs the main loop for the created window
-void Window::run()
+void OSWindow::run()
 {
   #ifdef _WIN32
   if (Image::getTextures().size() > 0)
