@@ -38,15 +38,11 @@ OSWindow::OSWindow(unsigned int width, unsigned int height, std::string title)
 #elif __linux__
   win = new Linux_Window(width, height, title);
 #endif
-}
-
-void OSWindow::update()
-{
   glViewport(0, 0, 1280, 720);
 
   // shader sources
-  std::string vertexShaderString = Filesystem::readShaderFile("src/resources/shaders/frame.vert");
-  std::string fragmentShaderString = Filesystem::readShaderFile("src/resources/shaders/frame.frag");
+  std::string vertexShaderString = Filesystem::readShaderFile("../src/resources/shaders/frame.vert");
+  std::string fragmentShaderString = Filesystem::readShaderFile("../src/resources/shaders/frame.frag");
   
   const char* vertexShaderSource = vertexShaderString.c_str();
   const char* fragmentShaderSource = fragmentShaderString.c_str();
@@ -77,7 +73,10 @@ void OSWindow::update()
   
   // apply orthographic projection matrix for transformations
   projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
+}
 
+void OSWindow::update()
+{
   // if we previously configured the vertex attrib pointers, start rendering
   if (attrib)
   {

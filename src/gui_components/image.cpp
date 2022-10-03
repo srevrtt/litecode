@@ -55,8 +55,8 @@ Image::Image(int x, int y, unsigned int width, unsigned int height, std::string 
     initialized = true;
 
     // shader sources
-    std::string vertexShaderString = Filesystem::readShaderFile("src/resources/shaders/image.vert");
-    std::string fragmentShaderString = Filesystem::readShaderFile("src/resources/shaders/image.frag");
+    std::string vertexShaderString = Filesystem::readShaderFile("../src/resources/shaders/image.vert");
+    std::string fragmentShaderString = Filesystem::readShaderFile("../src/resources/shaders/image.frag");
 
     // convert into OpenGL-readable C strings
     const char* vertexShaderSource = vertexShaderString.c_str();

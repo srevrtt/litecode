@@ -19,8 +19,11 @@ set(GUI_SRCS src/gui_components/frame.cpp src/gui_components/image.cpp src/gui_c
 set(UTIL_SRCS src/utilities/fs.cpp)
 set(SRCS dependencies/glad/glad.c ${PLATFORM_SRCS} ${GUI_SRCS} ${UTIL_SRCS} src/main.cpp)
 
+add_subdirectory(dependencies/freetype)
+
 include_directories(dependencies)
 include_directories(dependencies/glm)
+include_directories(dependencies/freetype/include)
 
 add_executable(Litecode ${SRCS})
 
