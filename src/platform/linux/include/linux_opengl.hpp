@@ -2,6 +2,6 @@
 
 namespace Linux_Opengl
 {
-  void createContext(bool &initialized);
+  void createContext();
   void render();
 }

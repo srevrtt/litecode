@@ -17,7 +17,7 @@ Window handle;
 
 typedef GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, GLXContext, Bool, const int*);
 
-void Linux_Opengl::createContext(bool &initialized)
+void Linux_Opengl::createContext()
 {
   int glxAttribs[] =
   {
@@ -100,9 +100,6 @@ void Linux_Opengl::createContext(bool &initialized)
   XGetWindowAttributes(display, handle, &attribs);
 
   gladLoadGL();
-  glViewport(0, 0, attribs.width, attribs.height);
-
-  initialized = true;
 }
 
 void Linux_Opengl::render()

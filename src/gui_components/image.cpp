@@ -15,14 +15,14 @@
 #include <stb/stb_image.h>
 
 // OpenGL stuff
-unsigned int shaderProgram;
-unsigned int vao{};
+unsigned int imageProgram;
+unsigned int imageVao{};
 
 bool initialized = false;
 std::vector<Image*> images;
 
 // math
-glm::mat4 projection;
+glm::mat4 imageProjection;
 
 // Creates a new image component
 Image::Image(int x, int y, unsigned int width, unsigned int height, std::string filepath)
@@ -73,19 +73,19 @@ Image::Image(int x, int y, unsigned int width, unsigned int height, std::string 
     glCompileShader(fragmentShader);
 
     // shader program
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
+    imageProgram = glCreateProgram();
+    glAttachShader(imageProgram, vertexShader);
+    glAttachShader(imageProgram, fragmentShader);
 
-    glLinkProgram(shaderProgram);
+    glLinkProgram(imageProgram);
 
     // delete shaders to save memory
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
     // vao
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    glGenVertexArrays(1, &imageVao);
+    glBindVertexArray(imageVao);
   }
 
   // vbo
@@ -130,7 +130,7 @@ Image::Image(int x, int y, unsigned int width, unsigned int height, std::string 
   stbi_image_free(data);
 
   // set projection matrix
-  projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
+  imageProjection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
 
   // push back this object
   images.push_back(this);
@@ -139,10 +139,10 @@ Image::Image(int x, int y, unsigned int width, unsigned int height, std::string 
 // Draws the image onto the renderer
 void Image::render()
 {
-  glUseProgram(shaderProgram);
+  glUseProgram(imageProgram);
 
   glBindTexture(GL_TEXTURE_2D, texture);
-  glBindVertexArray(vao);
+  glBindVertexArray(imageVao);
 
   // calculate transformations
   model = glm::mat4(1.0f);
@@ -150,11 +150,11 @@ void Image::render()
   model = glm::scale(model, glm::vec3(width, height, 0.0f));
 
   // apply matrices
-  int modelLocation = glGetUniformLocation(shaderProgram, "model");
-  int projectionLocation = glGetUniformLocation(shaderProgram, "projection");
+  int modelLocation = glGetUniformLocation(imageProgram, "model");
+  int projectionLocation = glGetUniformLocation(imageProgram, "projection");
 
   glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
-  glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+  glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(imageProjection));
 
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
