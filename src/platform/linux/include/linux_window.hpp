@@ -13,9 +13,6 @@ public:
   Linux_Window(unsigned int width, unsigned int height, std::string title);
 
   void run();
-  void actualRun();
-
-  static bool ran;
 
   static Display *getDisplay();
   static Window getWindow();

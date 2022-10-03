@@ -19,6 +19,8 @@ private:
 public:
   OSWindow(unsigned int width, unsigned int height, std::string title);
   
-  static gboolean update(GtkWidget *window, GdkFrameClock *clock, gpointer data);
+  static gboolean updateGtk(GtkWidget *window, GdkFrameClock *clock, gpointer data);
+  static void update();
+
   void run();
 };

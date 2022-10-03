@@ -15,10 +15,13 @@
 Display *display;
 Window handle;
 
+// GLX context creation proc address type
 typedef GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, GLXContext, Bool, const int*);
 
+// Creates a Linux specific OpenGL context
 void Linux_Opengl::createContext()
 {
+  // configure the OpenGL renderer
   int glxAttribs[] =
   {
     GLX_X_RENDERABLE, True,
@@ -35,14 +38,15 @@ void Linux_Opengl::createContext()
     0
   };
 
+  // get the X11 handles
   display = Linux_Window::getDisplay();
   int screen = DefaultScreen(display);
 
+  // getting the best FB visual with the most samples per pixel
   int fbCount{};
   GLXFBConfig *fbc = glXChooseFBConfig(display, screen, glxAttribs, &fbCount);
 
   int bestFbc = -1, worstFbc = -1, bestNumSamp = -1, worstNumSamp = 999;
-  
   for (int i = 0; i < fbCount; i++)
   {
     XVisualInfo *visualInfo = glXGetVisualFromFBConfig(display, fbc[i]);
@@ -69,18 +73,22 @@ void Linux_Opengl::createContext()
     }
   }
 
+  // choosing the visual info from that best FB visual
   GLXFBConfig bestFBC = fbc[bestFbc];  
   XVisualInfo *visual = glXGetVisualFromFBConfig(display, bestFBC);
 
+  // error handling
   if (visual == 0)
   {
     std::cout << "Error: Could not create visual window.\n";
     exit(1);
   }
 
+  // 
   glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
   glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc) glXGetProcAddressARB((const GLubyte *) "glXCreateContextAttribsARB");
 
+  // configure the OpenGL context
   int contextAttribs[] =
   {
     GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
@@ -89,19 +97,19 @@ void Linux_Opengl::createContext()
     None
   };
 
+  // get the X11 window handle from the GTK window
   handle = Linux_Window::getWindow();
 
+  // create the context
   GLXContext context = 0;
   context = glXCreateContextAttribsARB(display, bestFBC, 0, true, contextAttribs);
 
+  // make it current & load glad :)
   glXMakeCurrent(display, handle, context);
-
-  XWindowAttributes attribs;
-  XGetWindowAttributes(display, handle, &attribs);
-
   gladLoadGL();
 }
 
+// Swaps both buffers of the OpenGL renderer
 void Linux_Opengl::render()
 {
   glXSwapBuffers(Linux_Window::getDisplay(), Linux_Window::getWindow());
