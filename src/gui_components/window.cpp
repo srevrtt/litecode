@@ -10,6 +10,7 @@
 #include "include/frame.hpp"
 #include "include/window.hpp"
 #include "include/image.hpp"
+#include "include/text.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -40,39 +41,42 @@ OSWindow::OSWindow(unsigned int width, unsigned int height, std::string title)
 #endif
   glViewport(0, 0, 1280, 720);
 
-  // shader sources
-  std::string vertexShaderString = Filesystem::readShaderFile("../src/resources/shaders/frame.vert");
-  std::string fragmentShaderString = Filesystem::readShaderFile("../src/resources/shaders/frame.frag");
+  // // shader sources
+  // std::string vertexShaderString = Filesystem::readShaderFile("../src/resources/shaders/frame.vert");
+  // std::string fragmentShaderString = Filesystem::readShaderFile("../src/resources/shaders/frame.frag");
   
-  const char* vertexShaderSource = vertexShaderString.c_str();
-  const char* fragmentShaderSource = fragmentShaderString.c_str();
+  // const char* vertexShaderSource = vertexShaderString.c_str();
+  // const char* fragmentShaderSource = fragmentShaderString.c_str();
   
-  // shaders
-  unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-  glCompileShader(vertexShader);
+  // // shaders
+  // unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  // glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+  // glCompileShader(vertexShader);
   
-  unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-  glCompileShader(fragmentShader);
+  // unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  // glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+  // glCompileShader(fragmentShader);
   
-  // shader program
-  shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
+  // // shader program
+  // shaderProgram = glCreateProgram();
+  // glAttachShader(shaderProgram, vertexShader);
+  // glAttachShader(shaderProgram, fragmentShader);
   
-  glLinkProgram(shaderProgram);
+  // glLinkProgram(shaderProgram);
   
-  // delete shaders to save memory
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
+  // // delete shaders to save memory
+  // glDeleteShader(vertexShader);
+  // glDeleteShader(fragmentShader);
   
-  // vertex array object
-  glGenVertexArrays(1, &vao);
-  glBindVertexArray(vao);
+  // // vertex array object
+  // glGenVertexArrays(1, &vao);
+  // glBindVertexArray(vao);
   
-  // apply orthographic projection matrix for transformations
-  projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
+  // // apply orthographic projection matrix for transformations
+  // projection = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
+
+  // initialize text rendering
+  FontComponent::init();
 }
 
 void OSWindow::update()
@@ -99,6 +103,11 @@ void OSWindow::update()
       image->render();
     }
 
+    for (auto &text : Text::getNumText())
+    {
+      text->render();
+    }
+
     // swap buffers
     #ifdef __linux__
     Linux_Opengl::render();
@@ -116,13 +125,10 @@ gboolean OSWindow::updateGtk(GtkWidget *window, GdkFrameClock *clock, gpointer d
 // Runs the main loop for the created window
 void OSWindow::run()
 {
-  if (Image::getTextures().size() > 0)
+  if (Image::getTextures().size() > 0 || Text::getNumText().size() > 0)
   {
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
   }
   else
   {
