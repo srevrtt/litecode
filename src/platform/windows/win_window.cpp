@@ -7,6 +7,7 @@
 #include <glad/glad.h>
 
 #include "include/win_window.hpp"
+#include "include/win_menu.hpp"
 
 // global HDC
 HDC driver;
@@ -18,11 +19,34 @@ const double frameDelay = 1000 / 60;
 // Window main event loop
 LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+  // switch event message
   switch (msg)
   {
+  // if a menu item has been created, then append it to the window
+  case WM_CREATE:
+    if (Windows_Menubar::menuActive())
+    {
+      Windows_Menubar::draw(hwnd);
+    }
+
+    break;
+  // menubar event handlers
+  case WM_COMMAND:
+    for (auto &item : Windows_Menubar::getItems())
+    {
+      // call the event handler only if it exists
+      if (LOWORD(wparam) == item->getId() && item->eventHandlerActive())
+      {
+        item->callEventHandler();
+      }
+    }
+
+    break;
+  // closing the window
   case WM_DESTROY:
     PostQuitMessage(0);
     break;
+  // if the window is being moved
   case WM_MOVING:
     frameTime = GetTickCount64() - frameStart;
     if (frameDelay > frameTime)
@@ -32,13 +56,14 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
     frameStart = GetTickCount64();
     break;
+  // setting minimum window size
   case WM_GETMINMAXINFO:
-    {
-      LPMINMAXINFO info = (LPMINMAXINFO)lparam;
-      info->ptMinTrackSize.x = 800;
-      info->ptMinTrackSize.y = 600;
-    }
-    break;
+  {
+    LPMINMAXINFO info = (LPMINMAXINFO)lparam;
+    info->ptMinTrackSize.x = 800;
+    info->ptMinTrackSize.y = 600;
+  }
+  break;
   default:
     return DefWindowProcA(hwnd, msg, wparam, lparam);
   }
@@ -71,19 +96,18 @@ Windows_Window::Windows_Window(unsigned int width, unsigned int height, std::str
 
     // create the window
     hwnd = CreateWindowExA(
-      WS_EX_CLIENTEDGE,
-      "window",
-      title.c_str(),
-      WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT,
-      CW_USEDEFAULT,
-      width,
-      height,
-      nullptr,
-      nullptr,
-      wc.hInstance,
-      nullptr
-    );
+        WS_EX_CLIENTEDGE,
+        "window",
+        title.c_str(),
+        WS_VISIBLE | WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        width,
+        height,
+        nullptr,
+        nullptr,
+        wc.hInstance,
+        nullptr);
 
     // error handling
     if (!hwnd)

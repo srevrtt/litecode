@@ -4,16 +4,32 @@
 #include "gui_components/include/window.hpp"
 #include "gui_components/include/image.hpp"
 #include "gui_components/include/text.hpp"
+#include "gui_components/include/menu.hpp"
 
-int main(int argc, char* argv[])
+OSWindow *window;
+
+void onQuit()
 {
-  OSWindow *window = new OSWindow(1280, 720, "Litecode v0.1.0");
-  FontComponent *font = new FontComponent("../src/resources/fonts/inter/Inter-Regular.ttf");
+  std::cout << "You have successfully escaped.\n";
+  window->close();
+}
 
-  Text *text = new Text(font, "orange banana.", 100, 100, 255, 255, 255);
-  Text *text2 = new Text(font, "woooooooooooooooooooo", 100, 200, 255, 255, 255);
+int main(int argc, char *argv[])
+{
+  OSSubmenu *submenu = new OSSubmenu("File");
 
+  OSMenuItem *newBtn = new OSMenuItem("New");
+  submenu->addItem(newBtn);
+
+  OSMenuItem *quit = new OSMenuItem("Quit");
+  quit->addEventHandler(onQuit);
+  submenu->addItem(quit);
+
+  OSMenubar *menu = new OSMenubar();
+  menu->addSubmenu(submenu);
+
+  window = new OSWindow(1280, 720, "Litecode v0.1.0");
   window->run();
-  
+
   return 0;
 }

@@ -14,13 +14,16 @@ class OSWindow
 {
 private:
 #ifdef _WIN32
-  Windows_Window* window;
+  Windows_Window *window;
 #endif
 public:
   OSWindow(unsigned int width, unsigned int height, std::string title);
-  
-  static gboolean updateGtk(GtkWidget *window, GdkFrameClock *clock, gpointer data);
-  static void update();
 
+#ifdef __linux__
+  static gboolean updateGtk(GtkWidget *window, GdkFrameClock *clock, gpointer data);
+#endif
+
+  static void update();
+  void close();
   void run();
 };

@@ -12,10 +12,10 @@ if(UNIX AND NOT APPLE)
 endif(UNIX AND NOT APPLE)
 
 if(MSVC)
-  set(PLATFORM_SRCS src/platform/windows/win_opengl.cpp src/platform/windows/win_window.cpp)
+  set(PLATFORM_SRCS src/platform/windows/win_opengl.cpp src/platform/windows/win_window.cpp src/platform/windows/win_menu.cpp)
 endif(MSVC)
 
-set(GUI_SRCS src/gui_components/frame.cpp src/gui_components/image.cpp src/gui_components/font.cpp src/gui_components/text.cpp src/gui_components/window.cpp)
+set(GUI_SRCS src/gui_components/frame.cpp src/gui_components/image.cpp src/gui_components/font.cpp src/gui_components/text.cpp src/gui_components/window.cpp src/gui_components/menu.cpp)
 set(UTIL_SRCS src/utilities/fs.cpp)
 set(SRCS dependencies/glad/glad.c ${PLATFORM_SRCS} ${GUI_SRCS} ${UTIL_SRCS} src/main.cpp)
 
@@ -27,7 +27,13 @@ include_directories(dependencies/freetype/include)
 
 add_executable(Litecode ${SRCS})
 
-target_link_libraries(Litecode PRIVATE ${GTK_LIBRARIES} dl GL X11 freetype)
-target_compile_definitions(Litecode PRIVATE ${GTK_FLAGS_OTHER})
-target_include_directories(Litecode PRIVATE ${GTK_INCLUDE_DIRS})
-target_link_directories(Litecode PRIVATE ${GTK_LIBRARY_DIRS})
+if(UNIX AND NOT APPLE)
+  target_link_libraries(Litecode PRIVATE ${GTK_LIBRARIES} dl GL X11 freetype)
+  target_compile_definitions(Litecode PRIVATE ${GTK_FLAGS_OTHER})
+  target_include_directories(Litecode PRIVATE ${GTK_INCLUDE_DIRS})
+  target_link_directories(Litecode PRIVATE ${GTK_LIBRARY_DIRS})
+endif(UNIX AND NOT APPLE)
+
+if (MSVC)
+  target_link_libraries(Litecode gdi32 opengl32 freetype)
+endif(MSVC)
