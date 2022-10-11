@@ -1,5 +1,7 @@
 #pragma once
+
 #include <string>
+#include <vector>
 
 #ifdef _WIN32
 #include "../../platform/windows/include/win_menu.hpp"

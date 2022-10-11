@@ -7,7 +7,10 @@
 
 #include "include/linux_window.hpp"
 #include "include/linux_opengl.hpp"
+
 #include "../../gui_components/include/window.hpp"
+#include "../../gui_components/include/text.hpp"
+#include "../../gui_components/include/image.hpp"
 
 #include <gtk/gtk.h>
 #include <gtk/gtkmain.h>
@@ -32,8 +35,21 @@ static void onActivate(GtkApplication *app, gpointer data)
   gtk_window_set_default_size(GTK_WINDOW(window), windowWidth, windowHeight);
   gtk_window_set_title(GTK_WINDOW(window), windowTitle.c_str());
 
-  // show it
-  gtk_window_present(GTK_WINDOW(window));
+  GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  gtk_container_add(GTK_CONTAINER(window), box);
+
+  GtkWidget *menubar = gtk_menu_bar_new();
+  GtkWidget *file = gtk_menu_new();
+
+  GtkWidget *fileMi = gtk_menu_item_new_with_label("File");
+  GtkWidget *quitMi = gtk_menu_item_new_with_label("Quit");
+
+  gtk_menu_item_set_submenu(GTK_MENU_ITEM(fileMi), file);
+  gtk_menu_shell_append(GTK_MENU_SHELL(file), quitMi);
+  gtk_menu_shell_append(GTK_MENU_SHELL(menubar), fileMi);
+  gtk_box_pack_start(GTK_BOX(box), menubar, FALSE, FALSE, 0);
+
+  gtk_widget_show_all(window);
 
   // initialize OpenGL
   Linux_Opengl::createContext();
@@ -58,8 +74,8 @@ Linux_Window::Linux_Window(unsigned int width, unsigned int height, std::string 
   g_signal_connect(app, "activate", G_CALLBACK(onActivate), nullptr);
 
   // run the application without going into the main loop
-  const char *argv[] = { windowTitle.c_str() };
-  g_application_run(G_APPLICATION(app), 0, (char**)argv);
+  const char *argv[] = {windowTitle.c_str()};
+  g_application_run(G_APPLICATION(app), 0, (char **)argv);
 }
 
 // Sets the Linux window to go into a "main loop state"
@@ -83,7 +99,7 @@ Window Linux_Window::getWindow()
 // Gets the window size of the Linux window
 std::vector<int> Linux_Window::getSize()
 {
-  return { windowWidth, windowHeight };
+  return {windowWidth, windowHeight};
 }
 
 #endif

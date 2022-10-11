@@ -16,27 +16,26 @@ Display *display;
 Window handle;
 
 // GLX context creation proc address type
-typedef GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, GLXContext, Bool, const int*);
+typedef GLXContext (*glXCreateContextAttribsARBProc)(Display *, GLXFBConfig, GLXContext, Bool, const int *);
 
 // Creates a Linux specific OpenGL context
 void Linux_Opengl::createContext()
 {
   // configure the OpenGL renderer
   int glxAttribs[] =
-  {
-    GLX_X_RENDERABLE, True,
-    GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
-    GLX_RENDER_TYPE, GLX_RGBA_BIT,
-    GLX_X_VISUAL_TYPE, GLX_TRUE_COLOR,
-    GLX_RED_SIZE, 8,
-    GLX_GREEN_SIZE, 8,
-    GLX_BLUE_SIZE, 8,
-    GLX_ALPHA_SIZE, 8,
-    GLX_DEPTH_SIZE, 24,
-    GLX_STENCIL_SIZE, 8,
-    GLX_DOUBLEBUFFER, True,
-    0
-  };
+      {
+          GLX_X_RENDERABLE, True,
+          GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
+          GLX_RENDER_TYPE, GLX_RGBA_BIT,
+          GLX_X_VISUAL_TYPE, GLX_TRUE_COLOR,
+          GLX_RED_SIZE, 8,
+          GLX_GREEN_SIZE, 8,
+          GLX_BLUE_SIZE, 8,
+          GLX_ALPHA_SIZE, 8,
+          GLX_DEPTH_SIZE, 24,
+          GLX_STENCIL_SIZE, 8,
+          GLX_DOUBLEBUFFER, True,
+          0};
 
   // get the X11 handles
   display = Linux_Window::getDisplay();
@@ -74,7 +73,7 @@ void Linux_Opengl::createContext()
   }
 
   // choosing the visual info from that best FB visual
-  GLXFBConfig bestFBC = fbc[bestFbc];  
+  GLXFBConfig bestFBC = fbc[bestFbc];
   XVisualInfo *visual = glXGetVisualFromFBConfig(display, bestFBC);
 
   // error handling
@@ -84,18 +83,16 @@ void Linux_Opengl::createContext()
     exit(1);
   }
 
-  // 
   glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
-  glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc) glXGetProcAddressARB((const GLubyte *) "glXCreateContextAttribsARB");
+  glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc)glXGetProcAddressARB((const GLubyte *)"glXCreateContextAttribsARB");
 
   // configure the OpenGL context
   int contextAttribs[] =
-  {
-    GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
-    GLX_CONTEXT_MINOR_VERSION_ARB, 3,
-    GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
-    None
-  };
+      {
+          GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
+          GLX_CONTEXT_MINOR_VERSION_ARB, 3,
+          GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
+          None};
 
   // get the X11 window handle from the GTK window
   handle = Linux_Window::getWindow();

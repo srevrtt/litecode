@@ -6,12 +6,12 @@
 #include "gui_components/include/text.hpp"
 #include "gui_components/include/menu.hpp"
 
-OSWindow *window;
+OSWindow *osWin;
 
 void onQuit()
 {
   std::cout << "You have successfully escaped.\n";
-  window->close();
+  osWin->close();
 }
 
 int main(int argc, char *argv[])
@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
   OSMenubar *menu = new OSMenubar();
   menu->addSubmenu(submenu);
 
-  window = new OSWindow(1280, 720, "Litecode v0.1.0");
-  window->run();
+  osWin = new OSWindow(1280, 720, "Litecode v0.1.0");
+  osWin->run();
 
   return 0;
 }

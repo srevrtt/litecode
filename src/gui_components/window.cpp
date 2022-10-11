@@ -39,7 +39,7 @@ OSWindow::OSWindow(unsigned int width, unsigned int height, std::string title)
 #elif __linux__
   win = new Linux_Window(width, height, title);
 #endif
-  glViewport(0, 0, 1280, 720);
+  glViewport(0, 0, 0, 0);
 
   // // shader sources
   // std::string vertexShaderString = Filesystem::readShaderFile("../src/resources/shaders/frame.vert");
@@ -155,5 +155,7 @@ void OSWindow::run()
 
 void OSWindow::close()
 {
+#ifdef _WIN32
   window->close();
+#endif
 }
